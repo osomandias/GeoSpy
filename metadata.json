@@ -1,0 +1,5 @@
+{
+  "name": "GeoSpy: Descubridor de Lugares",
+  "description": "Una aplicación inteligente que analiza tus fotos de viajes para identificar monumentos, ciudades y paisajes, proporcionando descripciones detalladas y enlaces a mapas mediante inteligencia artificial.",
+  "requestFramePermissions": []
+}
