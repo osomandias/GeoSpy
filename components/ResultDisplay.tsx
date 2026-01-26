@@ -8,15 +8,23 @@ interface ResultDisplayProps {
 }
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, image }) => {
+  // Generar un enlace de búsqueda si no hay un enlace directo de Google Maps
+  const mapsUrl = result.googleMapsLinks?.[0] || 
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(result.locationName + (result.country ? ' ' + result.country : ''))}`;
+
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col lg:flex-row">
         {/* Lado de la Imagen */}
         <div className="lg:w-1/3 relative h-64 lg:h-auto min-h-[300px]">
           <img src={image} alt={result.locationName} className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute top-4 left-4">
-             <span className="inline-block px-3 py-1 bg-white/90 backdrop-blur shadow-sm text-indigo-700 text-xs font-bold uppercase tracking-wider rounded-full">
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+             <span className="inline-block px-3 py-1 bg-white/90 backdrop-blur shadow-sm text-indigo-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
                 {result.country || 'Lugar Detectado'}
+              </span>
+             <span className="inline-block px-3 py-1 bg-emerald-500/90 backdrop-blur shadow-sm text-white text-[9px] font-black uppercase tracking-widest rounded-full self-start">
+                <i className="fa-solid fa-check-double mr-1"></i>
+                En Memoria
               </span>
           </div>
         </div>
@@ -27,24 +35,27 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, image }) => {
             <div>
               <h2 className="text-3xl font-bold text-slate-800">{result.locationName}</h2>
               {result.country && (
-                <p className="flex items-center gap-2 text-slate-500 mt-1">
-                  <i className="fa-solid fa-location-dot text-indigo-500"></i>
-                  {result.country}
-                </p>
+                <a 
+                  href={mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-slate-500 mt-1 hover:text-indigo-600 transition-colors group/loc"
+                >
+                  <i className="fa-solid fa-location-dot text-indigo-500 group-hover/loc:scale-125 transition-transform"></i>
+                  <span className="border-b border-transparent group-hover/loc:border-indigo-200">{result.country}</span>
+                </a>
               )}
             </div>
             
-            {result.googleMapsLinks.length > 0 && (
-              <a
-                href={result.googleMapsLinks[0]}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-slate-800 transition-all active:scale-95 text-sm whitespace-nowrap"
-              >
-                <i className="fa-solid fa-map"></i>
-                Abrir Mapa
-              </a>
-            )}
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-slate-800 transition-all active:scale-95 text-sm whitespace-nowrap"
+            >
+              <i className="fa-solid fa-map"></i>
+              Abrir Mapa
+            </a>
           </div>
 
           <div className="prose prose-slate max-w-none">

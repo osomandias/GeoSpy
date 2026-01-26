@@ -99,6 +99,8 @@ const PresentationMode: React.FC<PresentationModeProps> = ({ slides, onClose, ti
     }
   };
 
+  const currentMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(currentSlide.locationName + (currentSlide.country ? ' ' + currentSlide.country : ''))}`;
+
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col md:flex-row animate-in fade-in duration-700 overflow-hidden">
       
@@ -229,10 +231,15 @@ const PresentationMode: React.FC<PresentationModeProps> = ({ slides, onClose, ti
         
         <div className="p-8 border-t border-white/5 bg-black/20">
           <div className="flex items-center justify-between text-[10px] text-white/30 font-bold uppercase tracking-widest">
-            <span className="flex items-center gap-2">
-              <i className="fa-solid fa-location-dot text-indigo-500"></i>
+            <a 
+              href={currentMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white transition-colors group/presloc"
+            >
+              <i className="fa-solid fa-location-dot text-indigo-500 group-hover/presloc:scale-125 transition-transform"></i>
               {currentSlide.country}
-            </span>
+            </a>
             <span>{currentIndex + 1} / {slides.length}</span>
           </div>
         </div>
